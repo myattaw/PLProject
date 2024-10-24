@@ -35,6 +35,28 @@
             <artifactId>flatlaf</artifactId>
             <version>3.5.2</version>
         </dependency>
+
+        <!-- ASM Core Library -->
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>9.2</version> <!-- Latest stable version as of 2024 -->
+        </dependency>
+
+        <!-- ASM Tree API -->
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-tree</artifactId>
+            <version>9.2</version>
+        </dependency>
+
+        <!-- ASM Commons (for Remapper) -->
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-commons</artifactId>
+            <version>9.2</version>
+        </dependency>
+
     </dependencies>
 
     <build>

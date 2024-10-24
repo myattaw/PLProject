@@ -1,6 +1,10 @@
 package me.yattaw.project.plproject;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.MethodNode;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
@@ -8,6 +12,10 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
 
 public class PLProjectApp {
 
@@ -18,7 +26,6 @@ public class PLProjectApp {
     }
 
     public PLProjectApp() {
-        // Set FlatLaf look and feel (optional)
         try {
             UIManager.setLookAndFeel(new FlatDarkLaf());
         } catch (Exception e) {
@@ -60,8 +67,19 @@ public class PLProjectApp {
         frame.add(leftPanel);
         frame.add(rightPanel);
 
-        // ActionListener for Upload Button (to load hardcoded values)
-        uploadJarButton.addActionListener(e -> loadHardcodedClasses(root, classTree));
+        // ActionListener for Upload Button (to load jar and classes dynamically)
+        uploadJarButton.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            int result = fileChooser.showOpenDialog(null);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                String jarPath = fileChooser.getSelectedFile().getAbsolutePath();
+                try {
+                    loadClassesFromJar(root, classTree, jarPath);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
 
         // Listener for selecting a method/field in the tree
         classTree.addTreeSelectionListener(new TreeSelectionListener() {
@@ -91,23 +109,38 @@ public class PLProjectApp {
         frame.setVisible(true);
     }
 
-    private void loadHardcodedClasses(DefaultMutableTreeNode root, JTree tree) {
+    private void loadClassesFromJar(DefaultMutableTreeNode root, JTree tree, String jarPath) throws IOException {
         root.removeAllChildren();  // Clear previous data
 
-        // Create a class node for "Main"
-        DefaultMutableTreeNode mainClassNode = new DefaultMutableTreeNode("Main");
-        root.add(mainClassNode);
+        // Open the JAR file
+        try (JarInputStream jarStream = new JarInputStream(new FileInputStream(jarPath))) {
+            JarEntry entry;
+            while ((entry = jarStream.getNextJarEntry()) != null) {
+                if (entry.getName().endsWith(".class")) {
+                    ClassNode classNode = new ClassNode();
+                    ClassReader classReader = new ClassReader(jarStream);
+                    classReader.accept(classNode, 0);
 
-        // Methods under the "Main" class
-        DefaultMutableTreeNode methodsNode = new DefaultMutableTreeNode("Methods");
-        mainClassNode.add(methodsNode);
-        methodsNode.add(new DefaultMutableTreeNode("main()"));
-        methodsNode.add(new DefaultMutableTreeNode("boolean isPrime(int num)"));
+                    // Create a node for the class
+                    DefaultMutableTreeNode classTreeNode = new DefaultMutableTreeNode(classNode.name.replace('/', '.'));
+                    root.add(classTreeNode);
 
-        // Fields under the "Main" class
-        DefaultMutableTreeNode fieldsNode = new DefaultMutableTreeNode("Fields");
-        mainClassNode.add(fieldsNode);
-        fieldsNode.add(new DefaultMutableTreeNode("public static int ONE_HUNDRED = 100"));
+                    // Add methods
+                    DefaultMutableTreeNode methodsNode = new DefaultMutableTreeNode("Methods");
+                    classTreeNode.add(methodsNode);
+                    for (MethodNode method : classNode.methods) {
+                        methodsNode.add(new DefaultMutableTreeNode(method.name + method.desc));
+                    }
+
+                    // Add fields
+                    DefaultMutableTreeNode fieldsNode = new DefaultMutableTreeNode("Fields");
+                    classTreeNode.add(fieldsNode);
+                    for (FieldNode field : classNode.fields) {
+                        fieldsNode.add(new DefaultMutableTreeNode(field.name + " " + field.desc));
+                    }
+                }
+            }
+        }
 
         // Update the JTree UI
         ((DefaultTreeModel) tree.getModel()).reload();
@@ -144,7 +177,6 @@ public class PLProjectApp {
         int index = tabbedPane.indexOfComponent(tabPanel);
         tabbedPane.setTabComponentAt(index, new ClosableTabComponent(tabbedPane, tabIdentifier));
     }
-
 
     private boolean isTabAlreadyOpen(String tabIdentifier) {
         for (int i = 0; i < tabbedPane.getTabCount(); i++) {
