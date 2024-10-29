@@ -222,10 +222,30 @@ public class PLProjectApp {
 
         tabPanel.add(obfuscationPanel, BorderLayout.CENTER);
 
+        // Text area to display bytecode instructions
+        JTextArea bytecodeTextArea = new JTextArea(10, 30);
+        bytecodeTextArea.setEditable(false);
+        bytecodeTextArea.setLineWrap(true);
+        bytecodeTextArea.setWrapStyleWord(true);
+
+        JScrollPane bytecodeScrollPane = new JScrollPane(bytecodeTextArea);
+        tabPanel.add(bytecodeScrollPane, BorderLayout.SOUTH);
+
         // Add the tab with closable functionality
         tabbedPane.addTab(tabIdentifier, tabPanel);
         int index = tabbedPane.indexOfComponent(tabPanel);
         tabbedPane.setTabComponentAt(index, new ClosableTabComponent(tabbedPane, tabIdentifier));
+
+        // Populate bytecodeTextArea with bytecode for the method or field
+        String bytecodeInstructions = getBytecodeInstructions(tabIdentifier);
+        bytecodeTextArea.setText(bytecodeInstructions);
+    }
+
+    private String getBytecodeInstructions(String tabIdentifier) {
+        // Logic to retrieve the bytecode of the selected method or field
+        // This would involve inspecting the MethodNode or FieldNode's instructions
+        // For demonstration, return a placeholder string
+        return "Bytecode instructions for: " + tabIdentifier;
     }
 
     // Helper method to find ObfData for the selected method/field
