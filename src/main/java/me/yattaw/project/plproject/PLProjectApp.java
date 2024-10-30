@@ -2,20 +2,16 @@ package me.yattaw.project.plproject;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import me.yattaw.project.plproject.data.ObfData;
+import me.yattaw.project.plproject.util.InstructionHelper;
 import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FieldNode;
-import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.*;
 
 import javax.swing.*;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.jar.JarEntry;
@@ -223,7 +219,7 @@ public class PLProjectApp {
         tabPanel.add(obfuscationPanel, BorderLayout.CENTER);
 
         // Text area to display bytecode instructions
-        JTextArea bytecodeTextArea = new JTextArea(10, 30);
+        JTextArea bytecodeTextArea = new JTextArea(25, 30);
         bytecodeTextArea.setEditable(false);
         bytecodeTextArea.setLineWrap(true);
         bytecodeTextArea.setWrapStyleWord(true);
@@ -242,10 +238,65 @@ public class PLProjectApp {
     }
 
     private String getBytecodeInstructions(String tabIdentifier) {
-        // Logic to retrieve the bytecode of the selected method or field
-        // This would involve inspecting the MethodNode or FieldNode's instructions
-        // For demonstration, return a placeholder string
-        return "Bytecode instructions for: " + tabIdentifier;
+        StringBuilder bytecodeInstructions = new StringBuilder();
+
+        // Retrieve MethodNode or FieldNode using tabIdentifier
+        for (Map.Entry<MethodNode, ObfData> entry : nodeObfDataMap.entrySet()) {
+            MethodNode methodNode = entry.getKey();
+            String methodIdentifier = methodNode.name + methodNode.desc;
+
+            if (tabIdentifier.contains(methodIdentifier)) {
+                bytecodeInstructions.append(String.format("Bytecode for method: %s%n", methodIdentifier));
+                bytecodeInstructions.append(getMethodBytecode(methodNode));
+                return bytecodeInstructions.toString();
+            }
+        }
+
+        for (Map.Entry<FieldNode, ObfData> entry : fieldNodeObfDataMap.entrySet()) {
+            FieldNode fieldNode = entry.getKey();
+            String fieldIdentifier = fieldNode.name + " " + fieldNode.desc;
+
+            if (tabIdentifier.contains(fieldIdentifier)) {
+                bytecodeInstructions.append(String.format("Details for field: %s%n", fieldIdentifier));
+                bytecodeInstructions.append(getFieldBytecode(fieldNode));
+                return bytecodeInstructions.toString();
+            }
+        }
+
+        return "No bytecode found for: " + tabIdentifier;
+    }
+
+
+    private String getMethodBytecode(MethodNode methodNode) {
+        StringBuilder bytecode = new StringBuilder();
+        if (methodNode.instructions.size() == 0) {
+            return "No bytecode instructions available.";
+        }
+
+        // Define a counter for label names
+        int labelCounter = 0;
+        // Keep track of line numbers
+        Map<Integer, String> lineNumbers = new HashMap<>();
+
+        // Iterate through the instructions
+        for (AbstractInsnNode insn : methodNode.instructions) {
+            String formattedInstruction = InstructionHelper.formatInstruction(insn, labelCounter, lineNumbers);
+            bytecode.append(formattedInstruction).append("\n");
+
+            // Increment label counter for labels
+            if (insn instanceof LabelNode) {
+                labelCounter++;
+            }
+        }
+
+        return bytecode.toString();
+    }
+
+    // Utility method to format each instruction node into a human-readable string
+
+    private String getFieldBytecode(FieldNode fieldNode) {
+        // For fields, we don't have bytecode like methods do. We can return its details instead.
+        return "Field: " + fieldNode.name + "\nDescription: " + fieldNode.desc;
     }
 
     // Helper method to find ObfData for the selected method/field

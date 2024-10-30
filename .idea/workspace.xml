@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="78cc87c2-7c99-4df9-b842-df3624ef091c" name="Changes" comment="Updated GUI to use ObfData">
+    <list default="true" id="78cc87c2-7c99-4df9-b842-df3624ef091c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/util/OpcodeHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/PLProjectApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/PLProjectApp.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +23,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
@@ -88,23 +91,11 @@
       <option name="presentableId" value="Default" />
       <updated>1728962299425</updated>
       <workItem from="1729528151307" duration="4005000" />
+      <workItem from="1730318206426" duration="620000" />
     </task>
-    <task id="LOCAL-00001" summary="Updated GUI to use ObfData">
-      <option name="closed" value="true" />
-      <created>1729988135780</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1729988135780</updated>
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="Updated GUI to use ObfData" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated GUI to use ObfData" />
   </component>
 </project>
