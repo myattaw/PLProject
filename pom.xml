@@ -57,6 +57,12 @@
             <version>9.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-util</artifactId>
+            <version>9.2</version> <!-- Ensure this matches your ASM version -->
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -3,9 +3,12 @@ package me.yattaw.project.plproject;
 import com.formdev.flatlaf.FlatDarkLaf;
 import me.yattaw.project.plproject.data.ObfData;
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.util.Textifier;
+import org.objectweb.asm.util.TraceMethodVisitor;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
@@ -15,9 +18,9 @@ import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
@@ -242,10 +245,47 @@ public class PLProjectApp {
     }
 
     private String getBytecodeInstructions(String tabIdentifier) {
-        // Logic to retrieve the bytecode of the selected method or field
-        // This would involve inspecting the MethodNode or FieldNode's instructions
-        // For demonstration, return a placeholder string
-        return "Bytecode instructions for: " + tabIdentifier;
+        // Retrieve MethodNode or FieldNode associated with the tabIdentifier
+        for (Map.Entry<MethodNode, ObfData> entry : nodeObfDataMap.entrySet()) {
+            MethodNode method = entry.getKey();
+            if (tabIdentifier.contains(method.name)) {
+                return getMethodBytecode(method);
+            }
+        }
+        for (Map.Entry<FieldNode, ObfData> entry : fieldNodeObfDataMap.entrySet()) {
+            FieldNode field = entry.getKey();
+            if (tabIdentifier.contains(field.name)) {
+                return "Fields do not contain executable bytecode.";
+            }
+        }
+        return "Bytecode instructions not found for: " + tabIdentifier;
+    }
+
+
+    private String getMethodBytecode(MethodNode method) {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+        TraceMethodVisitor traceMethodVisitor = new TraceMethodVisitor(new Textifier());
+        Set<String> uniqueInstructions = new LinkedHashSet<>();
+
+        for (AbstractInsnNode insn : method.instructions) {
+            // Trace and store unique instruction output
+            insn.accept(traceMethodVisitor);
+
+            // Clean up the traced output to prevent extra characters
+            String instruction = traceMethodVisitor.p.getText().toString().replaceAll("[\\[\\]]", "").trim();
+
+            if (uniqueInstructions.add(instruction)) { // add only if unique
+                // Print each unique instruction with proper formatting
+                printWriter.println(instruction);
+            }
+
+            // Clear buffer for next instruction
+            traceMethodVisitor.p.getText().clear();
+        }
+
+        printWriter.flush();
+        return stringWriter.toString();
     }
 
     // Helper method to find ObfData for the selected method/field
