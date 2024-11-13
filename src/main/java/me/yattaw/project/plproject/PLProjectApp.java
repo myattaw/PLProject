@@ -3,6 +3,9 @@ package me.yattaw.project.plproject;
 import com.formdev.flatlaf.FlatDarkLaf;
 import me.yattaw.project.plproject.data.ObfData;
 import me.yattaw.project.plproject.util.InstructionHelper;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.builder.fluent.Configurations;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.*;
 
@@ -33,6 +36,14 @@ public class PLProjectApp {
         try {
             UIManager.setLookAndFeel(new FlatDarkLaf());
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Configurations configs = new Configurations();
+        try {
+            // Load the configuration file
+            PropertiesConfiguration config = configs.properties("config.properties");
+        } catch (ConfigurationException e) {
             e.printStackTrace();
         }
 
