@@ -3,6 +3,9 @@ package me.yattaw.project.plproject;
 import com.formdev.flatlaf.FlatDarkLaf;
 import me.yattaw.project.plproject.data.ObfData;
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.commons.ClassRemapper;
+import org.objectweb.asm.commons.Remapper;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
@@ -11,24 +14,23 @@ import org.objectweb.asm.util.Textifier;
 import org.objectweb.asm.util.TraceMethodVisitor;
 
 import javax.swing.*;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
+import java.util.jar.JarOutputStream;
 
 public class PLProjectApp {
 
     private JTabbedPane tabbedPane;
+    private static final Random random = new Random();
 
-    private final Map<MethodNode, ObfData> nodeObfDataMap = new HashMap<>();
+    private final Map<String, ObfData> nodeObfDataMap = new HashMap<>();
     private final Map<FieldNode, ObfData> fieldNodeObfDataMap = new HashMap<>();
 
 
@@ -42,6 +44,8 @@ public class PLProjectApp {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        AtomicReference<String> jarPath = new AtomicReference<>();
 
         // Create the main frame
         JFrame frame = new JFrame("PLProject Obfuscator");
@@ -74,6 +78,9 @@ public class PLProjectApp {
         // Obfuscate button
         JButton obfuscateButton = new JButton("Obfuscate Selected JAR");
         obfuscateButton.setEnabled(false);  // Disable until a JAR is loaded
+        obfuscateButton.addActionListener(e -> {
+            obfuscateJar(jarPath.get());
+        });
 
         // Add the tabbedPane and obfuscateButton to the right panel
         rightPanel.add(tabbedPane, BorderLayout.CENTER);
@@ -88,9 +95,10 @@ public class PLProjectApp {
             JFileChooser fileChooser = new JFileChooser();
             int result = fileChooser.showOpenDialog(null);
             if (result == JFileChooser.APPROVE_OPTION) {
-                String jarPath = fileChooser.getSelectedFile().getAbsolutePath();
+                String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+                jarPath.set(filePath);
                 try {
-                    loadClassesFromJar(root, classTree, jarPath);
+                    loadClassesFromJar(root, classTree, filePath);
                     obfuscateButton.setEnabled(true);
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -152,7 +160,7 @@ public class PLProjectApp {
 
                         // Initialize ObfData for each MethodNode and add it to the nodeObfDataMap
                         ObfData methodObfData = new ObfData();
-                        nodeObfDataMap.put(method, methodObfData);
+                        nodeObfDataMap.put(method.name + method.desc, methodObfData);
                     }
 
                     // Add fields
@@ -246,10 +254,9 @@ public class PLProjectApp {
 
     private String getBytecodeInstructions(String tabIdentifier) {
         // Retrieve MethodNode or FieldNode associated with the tabIdentifier
-        for (Map.Entry<MethodNode, ObfData> entry : nodeObfDataMap.entrySet()) {
-            MethodNode method = entry.getKey();
-            if (tabIdentifier.contains(method.name)) {
-                return getMethodBytecode(method);
+        for (Map.Entry<String, ObfData> entry : nodeObfDataMap.entrySet()) {
+            if (tabIdentifier.contains(entry.getKey())) {
+//                return getMethodBytecode(method);
             }
         }
         for (Map.Entry<FieldNode, ObfData> entry : fieldNodeObfDataMap.entrySet()) {
@@ -291,8 +298,8 @@ public class PLProjectApp {
     // Helper method to find ObfData for the selected method/field
     private ObfData getObfDataForTab(String tabIdentifier) {
         // Assuming the tabIdentifier uniquely represents either a MethodNode or FieldNode
-        for (Map.Entry<MethodNode, ObfData> entry : nodeObfDataMap.entrySet()) {
-            if (tabIdentifier.contains(entry.getKey().name)) {
+        for (Map.Entry<String, ObfData> entry : nodeObfDataMap.entrySet()) {
+            if (tabIdentifier.contains(entry.getKey())) {
                 return entry.getValue();
             }
         }
@@ -342,7 +349,84 @@ public class PLProjectApp {
     }
 
     // Mockup of the obfuscateJar method
-    private void obfuscateJar(String jarPath) {
+    public void obfuscateJar(String jarPath) {
+        String outputPath = jarPath.replace(".jar", "_obfuscated.jar");
+
+        try (JarFile jarFile = new JarFile(jarPath);
+             FileOutputStream fos = new FileOutputStream(outputPath);
+             JarOutputStream jos = new JarOutputStream(fos)) {
+
+            // Iterate through each entry in the JAR
+            Enumeration<JarEntry> entries = jarFile.entries();
+            while (entries.hasMoreElements()) {
+                JarEntry entry = entries.nextElement();
+
+                // Copy non-class files (e.g., resources) as-is
+                if (!entry.getName().endsWith(".class")) {
+                    jos.putNextEntry(new JarEntry(entry.getName()));
+                    try (InputStream is = jarFile.getInputStream(entry)) {
+                        is.transferTo(jos);
+                    }
+                    continue;
+                }
+
+                // Process class files
+                try (InputStream is = jarFile.getInputStream(entry)) {
+                    byte[] modifiedClass = getBytes(is);
+                    jos.putNextEntry(new JarEntry(entry.getName()));
+                    jos.write(modifiedClass);
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private byte[] getBytes(InputStream is) throws IOException {
+        ClassReader classReader = new ClassReader(is);
+        ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+
+        // Create a remapper that generates new names for each method
+        Remapper remapper = new Remapper() {
+            @Override
+            public String mapMethodName(String owner, String name, String descriptor) {
+                // Extract the ObfData object for this method
+                ObfData obfData = nodeObfDataMap.get(name + descriptor);
+
+                if (obfData != null && obfData.isNameObfuscation()) {
+                    // Check if the method is already obfuscated
+                    if (obfData.getObfuscatedName() != null) {
+                        return obfData.getObfuscatedName(); // Return the already-obfuscated name
+                    }
+
+                    // Generate a new obfuscated name and store it
+                    String obfuscatedName = generateRandomString(12);
+                    obfData.setObfuscatedName(obfuscatedName);
+                    System.out.println("Obfuscating " + name + " -> " + obfuscatedName);
+                    return obfuscatedName;
+                }
+
+                return name; // No obfuscation needed
+            }
+        };
+
+        // Apply the remapper using ClassRemapper
+        ClassRemapper classRemapper = new ClassRemapper(classWriter, remapper);
+        classReader.accept(classRemapper, ClassReader.EXPAND_FRAMES);
+
+        // Write the modified class back to the JAR
+        byte[] modifiedClass = classWriter.toByteArray();
+        return modifiedClass;
+    }
+
+    // Helper method to generate a random string for the method name
+    private String generateRandomString(int length) {
+        StringBuilder sb = new StringBuilder(length);
+        String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        for (int i = 0; i < length; i++) {
+            sb.append(chars.charAt(random.nextInt(chars.length())));
+        }
+        return sb.toString();
     }
 
 }

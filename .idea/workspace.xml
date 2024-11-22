@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="78cc87c2-7c99-4df9-b842-df3624ef091c" name="Changes" comment="Added bytecode reviewer in ui.">
+    <list default="true" id="78cc87c2-7c99-4df9-b842-df3624ef091c" name="Changes" comment="Updated UI to use up more extra space.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/PLProjectApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/PLProjectApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/data/ObfData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/data/ObfData.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +24,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
@@ -107,7 +111,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730161295919</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Updated UI to use up more extra space.">
+      <option name="closed" value="true" />
+      <created>1730572845176</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1730572845176</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -116,6 +128,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Updated GUI to use ObfData" />
     <MESSAGE value="Added bytecode reviewer in ui." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added bytecode reviewer in ui." />
+    <MESSAGE value="Updated UI to use up more extra space." />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated UI to use up more extra space." />
   </component>
 </project>
