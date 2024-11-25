@@ -1,4 +1,4 @@
-package me.yattaw.project.plproject.data;
+package me.yattaw.project.plproject.obf;
 
 import lombok.Data;
 

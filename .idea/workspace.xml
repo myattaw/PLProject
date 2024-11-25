@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="78cc87c2-7c99-4df9-b842-df3624ef091c" name="Changes" comment="Updated UI to use up more extra space.">
+    <list default="true" id="78cc87c2-7c99-4df9-b842-df3624ef091c" name="Changes" comment="Implemented basic method remapping.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/obf/JarHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/obf/Obfuscator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/ui/PLProjectUIManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/PLProjectApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/PLProjectApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/data/ObfData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/data/ObfData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/data/ObfData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/obf/ObfData.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,7 +121,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730572845176</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Implemented basic method remapping.">
+      <option name="closed" value="true" />
+      <created>1732235602081</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1732235602081</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -129,6 +139,7 @@
     <MESSAGE value="Updated GUI to use ObfData" />
     <MESSAGE value="Added bytecode reviewer in ui." />
     <MESSAGE value="Updated UI to use up more extra space." />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated UI to use up more extra space." />
+    <MESSAGE value="Implemented basic method remapping." />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented basic method remapping." />
   </component>
 </project>
