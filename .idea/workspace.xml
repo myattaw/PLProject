@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="78cc87c2-7c99-4df9-b842-df3624ef091c" name="Changes" comment="Implemented basic method remapping.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/obf/JarHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/obf/Obfuscator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/ui/PLProjectUIManager.java" afterDir="false" />
+    <list default="true" id="78cc87c2-7c99-4df9-b842-df3624ef091c" name="Changes" comment="Refactored all code to be more object-oriented.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/PLProjectApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/PLProjectApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/data/ObfData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/obf/ObfData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/obf/JarHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/obf/JarHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/obf/Obfuscator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/obf/Obfuscator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/ui/PLProjectUIManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/ui/PLProjectUIManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +127,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732235602081</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Refactored all code to be more object-oriented.">
+      <option name="closed" value="true" />
+      <created>1732494963770</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1732494963770</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -140,6 +146,7 @@
     <MESSAGE value="Added bytecode reviewer in ui." />
     <MESSAGE value="Updated UI to use up more extra space." />
     <MESSAGE value="Implemented basic method remapping." />
-    <option name="LAST_COMMIT_MESSAGE" value="Implemented basic method remapping." />
+    <MESSAGE value="Refactored all code to be more object-oriented." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactored all code to be more object-oriented." />
   </component>
 </project>

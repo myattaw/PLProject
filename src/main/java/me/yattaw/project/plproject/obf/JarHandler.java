@@ -60,7 +60,7 @@ public class JarHandler {
 
                         // Initialize ObfData for each FieldNode and add it to the fieldNodeObfDataMap
                         ObfData fieldObfData = new ObfData();
-                        obfuscator.getFieldNodeObfDataMap().put(field.name + field.desc, fieldObfData);
+                        obfuscator.getFieldNodeObfDataMap().put(field.name + " " + field.desc, fieldObfData);
                     }
                 }
             }

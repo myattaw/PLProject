@@ -198,6 +198,8 @@ public class PLProjectUIManager {
                 return entry.getValue();
             }
         }
+        System.out.println("No matching ObfData found for tab: " + tabIdentifier);
+
         return null; // No matching ObfData found
     }
 
