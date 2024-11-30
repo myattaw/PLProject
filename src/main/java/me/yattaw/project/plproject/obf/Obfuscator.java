@@ -176,9 +176,9 @@ public class Obfuscator {
                         @Override
                         public void visitFieldInsn(int opcode, String owner, String name, String descriptor) {
                             // Skip redundant field initialization in the static initializer
-                            ObfData obfData = fieldNodeObfDataMap.get(name);
-                            if (opcode == Opcodes.PUTSTATIC && obfData != null && obfData.isXorObfuscation()) {
-                                return; // Skip the original static initialization
+                            ObfData obfData = fieldNodeObfDataMap.get(name + " " + descriptor);
+                            if (opcode == Opcodes.PUTSTATIC && obfData != null && owner.equals(className)) {
+                                return; // Do not visit this instruction (removes assignment of 1000)
                             }
                             super.visitFieldInsn(opcode, owner, name, descriptor);
                         }
