@@ -1,9 +1,11 @@
 package me.yattaw.project.plproject.obf;
 
+import lombok.Getter;
 import org.objectweb.asm.*;
 import org.objectweb.asm.commons.ClassRemapper;
 import org.objectweb.asm.commons.Remapper;
 import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.MethodNode;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,8 +18,15 @@ import java.util.jar.JarOutputStream;
 
 public class Obfuscator {
 
+    @Getter
     private final Map<String, ObfData> nodeObfDataMap = new HashMap<>();
+    @Getter
+    private final Map<String, MethodNode> methodNodeMap = new HashMap<>();
+
+    @Getter
     private final Map<String, ObfData> fieldNodeObfDataMap = new HashMap<>();
+    @Getter
+    private final Map<String, FieldNode> fieldNodeMap = new HashMap<>();
     private static final SecureRandom RANDOM = new SecureRandom();
 
     private static final List<String> JAVA_KEYWORDS = Arrays.asList(
@@ -208,14 +217,6 @@ public class Obfuscator {
             sb.append(chars.charAt(RANDOM.nextInt(chars.length())));
         }
         return sb.toString();
-    }
-
-    public Map<String, ObfData> getFieldNodeObfDataMap() {
-        return fieldNodeObfDataMap;
-    }
-
-    public Map<String, ObfData> getNodeObfDataMap() {
-        return nodeObfDataMap;
     }
 
 }

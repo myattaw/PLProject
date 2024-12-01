@@ -3,13 +3,22 @@ package me.yattaw.project.plproject.ui;
 import me.yattaw.project.plproject.obf.JarHandler;
 import me.yattaw.project.plproject.obf.ObfData;
 import me.yattaw.project.plproject.obf.Obfuscator;
+import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.util.Textifier;
+import org.objectweb.asm.util.TraceMethodVisitor;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class PLProjectUIManager {
@@ -180,8 +189,8 @@ public class PLProjectUIManager {
         tabbedPane.setTabComponentAt(index, new ClosableTabComponent(tabbedPane, tabIdentifier));
 
         // Populate bytecodeTextArea with bytecode for the method or field
-//        String bytecodeInstructions = getBytecodeInstructions(tabIdentifier);
-//        bytecodeTextArea.setText(bytecodeInstructions);
+        String bytecodeInstructions = getBytecodeInstructions(tabIdentifier);
+        bytecodeTextArea.setText(bytecodeInstructions);
     }
 
 
@@ -201,6 +210,52 @@ public class PLProjectUIManager {
         System.out.println("No matching ObfData found for tab: " + tabIdentifier);
 
         return null; // No matching ObfData found
+    }
+
+    private String getBytecodeInstructions(String tabIdentifier) {
+        // Retrieve MethodNode or FieldNode associated with the tabIdentifier
+        for (Map.Entry<String, ObfData> entry : obfuscator.getNodeObfDataMap().entrySet()) {
+            if (tabIdentifier.contains(entry.getKey())) {
+                return getMethodBytecode(obfuscator.getMethodNodeMap().get(entry.getKey()));
+            }
+        }
+        for (Map.Entry<String, ObfData> entry : obfuscator.getFieldNodeObfDataMap().entrySet()) {
+            if (tabIdentifier.contains(entry.getKey())) {
+                return getFieldBytecode(obfuscator.getFieldNodeMap().get(entry.getKey()));
+            }
+        }
+        return "Bytecode instructions not found for: " + tabIdentifier;
+    }
+
+    private String getMethodBytecode(MethodNode method) {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+        TraceMethodVisitor traceMethodVisitor = new TraceMethodVisitor(new Textifier());
+        Set<String> uniqueInstructions = new LinkedHashSet<>();
+
+        for (AbstractInsnNode insn : method.instructions) {
+            // Trace and store unique instruction output
+            insn.accept(traceMethodVisitor);
+
+            // Clean up the traced output to prevent extra characters
+            String instruction = traceMethodVisitor.p.getText().toString().replaceAll("[\\[\\]]", "").trim();
+
+            if (uniqueInstructions.add(instruction)) { // add only if unique
+                // Print each unique instruction with proper formatting
+                printWriter.println(instruction);
+            }
+
+            // Clear buffer for next instruction
+            traceMethodVisitor.p.getText().clear();
+        }
+
+        printWriter.flush();
+        return stringWriter.toString();
+    }
+
+    private String getFieldBytecode(FieldNode field) {
+        // Example representation for field bytecode, customize as needed
+        return "FieldNode Bytecode: " + field.name + " " + field.desc + " " + field.signature;
     }
 
     // Custom tab component with close functionality built into the tab itself

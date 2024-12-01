@@ -50,6 +50,7 @@ public class JarHandler {
                         // Initialize ObfData for each MethodNode and add it to the nodeObfDataMap
                         ObfData methodObfData = new ObfData();
                         obfuscator.getNodeObfDataMap().put(method.name + method.desc, methodObfData);
+                        obfuscator.getMethodNodeMap().put(method.name + method.desc, method);
                     }
 
                     // Add fields
@@ -61,6 +62,7 @@ public class JarHandler {
                         // Initialize ObfData for each FieldNode and add it to the fieldNodeObfDataMap
                         ObfData fieldObfData = new ObfData();
                         obfuscator.getFieldNodeObfDataMap().put(field.name + " " + field.desc, fieldObfData);
+                        obfuscator.getFieldNodeMap().put(field.name + " " + field.desc, field);
                     }
                 }
             }
