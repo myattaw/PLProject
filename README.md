@@ -29,6 +29,9 @@ Each method and field node has an associated `ObfData` object, which stores the 
 
 These options are updated dynamically based on user selections, allowing real-time obfuscation configuration for each method or field.
 
+## UI Overview
+![Screenshot of the application's main user interface](ui.png)
+*This screenshot shows the layout of the user interface, featuring key components like the uploading jar, class data, bytecode instructions, and JAR obfuscation.*
 ## Usage Instructions
 
 1. **Load JAR File**:

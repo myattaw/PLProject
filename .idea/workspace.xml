@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="78cc87c2-7c99-4df9-b842-df3624ef091c" name="Changes" comment="Updated README.md.">
+    <list default="true" id="78cc87c2-7c99-4df9-b842-df3624ef091c" name="Changes" comment="Fixed viewing bytecode instructions of methods and fields.">
+      <change afterPath="$PROJECT_DIR$/ui.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/obf/JarHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/obf/JarHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/obf/Obfuscator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/obf/Obfuscator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/ui/PLProjectUIManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/yattaw/project/plproject/ui/PLProjectUIManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,20 +36,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Application.PLProjectApp">
     <configuration name="HelloApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="me.yattaw.project.plproject.HelloApplication" />
@@ -159,7 +159,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732941079540</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Fixed viewing bytecode instructions of methods and fields.">
+      <option name="closed" value="true" />
+      <created>1733019058650</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1733019058650</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -174,6 +182,7 @@
     <MESSAGE value="Implemented field XOR obfuscation." />
     <MESSAGE value="Fixed issue with initial field values." />
     <MESSAGE value="Updated README.md." />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated README.md." />
+    <MESSAGE value="Fixed viewing bytecode instructions of methods and fields." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed viewing bytecode instructions of methods and fields." />
   </component>
 </project>
